@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link"; // ✅ Import Link from next/link
+import Link from "next/link";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,7 +28,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* ✅ Persistent Navbar */}
         <nav className="bg-blue-600 text-white p-4 shadow-md">
           <div className="max-w-6xl mx-auto flex justify-between items-center">
             <Link href="/" className="text-lg font-bold">
@@ -54,8 +53,7 @@ export default function RootLayout({
           </div>
         </nav>
 
-        {/* Main Content */}
-        <main className="p-6">{children}</main>
+        <main className="w-full min-h-screen">{children}</main>
       </body>
     </html>
   );
