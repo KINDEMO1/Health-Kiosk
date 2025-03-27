@@ -1,16 +1,30 @@
 "use client";
+
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import { auth, googleProvider, signInWithPopup } from "@/lib/firebase"; // Ensure the correct import path
+import { useRouter } from "next/navigation";
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
+  const router = useRouter();
+
+  // Handle Google Sign-In
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("User signed in:", result.user);
+      router.push("/dashboard"); // Redirect to dashboard after login
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  };
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">
       <div className="w-full max-w-3xl flex flex-col md:flex-row shadow-lg rounded-xl overflow-hidden bg-white">
-        {/* Left Side - Welcome Section (Hidden on Small Screens) */}
+        {/* Left Side - Welcome Section */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -128,19 +142,6 @@ export default function AuthPage() {
                       placeholder="Enter your password"
                     />
                   </div>
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="mr-2 scale-125"
-                      id="rememberMe"
-                    />
-                    <label
-                      htmlFor="rememberMe"
-                      className="text-lg text-gray-700"
-                    >
-                      Remember Me
-                    </label>
-                  </div>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -160,24 +161,13 @@ export default function AuthPage() {
             transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
             className="mt-6 space-y-3"
           >
-            <button className="flex items-center justify-center w-full border py-3 rounded-lg hover:bg-gray-100 transition text-lg">
+            <button
+              onClick={handleGoogleSignIn}
+              className="flex items-center justify-center w-full border py-3 rounded-lg hover:bg-gray-100 transition text-lg"
+            >
               <FcGoogle className="mr-3 text-2xl" /> Continue with Google
             </button>
-            <button className="flex items-center justify-center w-full border py-3 rounded-lg hover:bg-gray-100 transition text-lg">
-              <FaGithub className="mr-3 text-2xl" /> Continue with GitHub
-            </button>
           </motion.div>
-
-          {/* Footer */}
-          <p className="mt-4 text-center text-lg text-gray-600">
-            {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
-            <button
-              className="text-blue-500 hover:underline"
-              onClick={() => setIsSignUp(!isSignUp)}
-            >
-              {isSignUp ? "Sign In" : "Sign Up"}
-            </button>
-          </p>
         </div>
       </div>
     </div>

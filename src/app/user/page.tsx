@@ -1,225 +1,202 @@
 "use client";
 
-import { useState, useEffect, JSX } from "react";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-} from "recharts";
-import {
-  FaUserMd,
-  FaVideo,
-  FaThermometer,
-  FaWeight,
-  FaHeartbeat,
-  FaTachometerAlt,
-} from "react-icons/fa";
+import { useState, ChangeEvent } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
 
-// Define Types
-interface ChartData {
-  day: string;
-  value: number;
+interface FormData {
+  fullName: string;
+  age: string;
+  sex: string;
+  birthday: string;
+  address: string;
+  contactNumber: string;
+  height: string;
+  weight: string;
+  symptoms: string;
+  systolic: string;
+  diastolic: string;
+  oxygenSaturation: string;
+  temperature: string;
 }
 
-interface MetricCardProps {
-  title: string;
-  icon: JSX.Element;
-  value: string;
-  subValue?: string;
-  chartData: ChartData[];
-}
+export default function PatientInformationKiosk() {
+  const [formData, setFormData] = useState<FormData>({
+    fullName: "",
+    age: "",
+    sex: "",
+    birthday: "",
+    address: "",
+    contactNumber: "",
+    height: "",
+    weight: "",
+    symptoms: "",
+    systolic: "",
+    diastolic: "",
+    oxygenSaturation: "",
+    temperature: "",
+  });
 
-// Patient Data
-const patientData = {
-  name: "John Doe",
-  age: 35,
-  profileImage: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
-  bloodPressure: {
-    systolic: 120,
-    diastolic: 80,
-    history: [
-      { day: "Day 1", value: 115 },
-      { day: "Day 2", value: 118 },
-      { day: "Day 3", value: 120 },
-      { day: "Day 4", value: 117 },
-      { day: "Day 5", value: 120 },
-    ],
-  },
-  temperature: {
-    current: 98.6,
-    history: [
-      { day: "Day 1", value: 98.4 },
-      { day: "Day 2", value: 98.6 },
-      { day: "Day 3", value: 98.7 },
-      { day: "Day 4", value: 98.5 },
-      { day: "Day 5", value: 98.6 },
-    ],
-  },
-  weight: {
-    current: 70,
-    history: [
-      { day: "Day 1", value: 69 },
-      { day: "Day 2", value: 69.5 },
-      { day: "Day 3", value: 70 },
-      { day: "Day 4", value: 70.2 },
-      { day: "Day 5", value: 70 },
-    ],
-    bmi: 22.5,
-  },
-  heartRate: {
-    current: 72,
-    history: [
-      { day: "Day 1", value: 70 },
-      { day: "Day 2", value: 72 },
-      { day: "Day 3", value: 71 },
-      { day: "Day 4", value: 73 },
-      { day: "Day 5", value: 72 },
-    ],
-  },
-};
-
-export default function HealthDashboard() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1500);
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-8">
-        <Skeleton className="h-12 w-48 mb-4" />
-        <Skeleton className="h-6 w-64 mb-6" />
-        <Skeleton className="h-72 w-full max-w-lg" />
-      </div>
-    );
-  }
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      {/* Header */}
-      <header className="bg-white rounded-xl p-6 mb-8 shadow-lg flex items-center gap-6">
-        <Avatar className="w-24 h-24">
-          <AvatarImage
-            src={patientData.profileImage}
-            alt="Patient"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d";
-            }}
-          />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">
-            {patientData.name}
-          </h1>
-          <p className="text-gray-600">Age: {patientData.age} years</p>
-        </div>
-      </header>
+    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative">
+      {/* Title */}
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 text-center">
+        Patient Information System
+      </h1>
 
-      {/* Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-8">
-        <MetricCard
-          title="Blood Pressure"
-          icon={<FaTachometerAlt className="text-blue-600 text-xl" />}
-          value={`${patientData.bloodPressure.systolic}/${patientData.bloodPressure.diastolic}`}
-          subValue="mmHg"
-          chartData={patientData.bloodPressure.history}
-        />
-        <MetricCard
-          title="Temperature"
-          icon={<FaThermometer className="text-red-600 text-xl" />}
-          value={`${patientData.temperature.current}°F`}
-          chartData={patientData.temperature.history}
-        />
-        <MetricCard
-          title="Weight"
-          icon={<FaWeight className="text-green-600 text-xl" />}
-          value={`${patientData.weight.current} kg`}
-          subValue={`BMI: ${patientData.weight.bmi}`}
-          chartData={patientData.weight.history}
-        />
-        <MetricCard
-          title="Heart Rate"
-          icon={<FaHeartbeat className="text-red-600 text-xl" />}
-          value={`${patientData.heartRate.current} BPM`}
-          chartData={patientData.heartRate.history}
-        />
+      {/* Form Container */}
+      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Section: Personal Information */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-gray-700 mb-2 text-center md:text-left">
+            Personal na Impormasyon
+          </h2>
+          <div>
+            <Label>Pangalan</Label>
+            <Input
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label>Edad</Label>
+            <Input
+              type="number"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label>Kasarian</Label>
+            <Input name="sex" value={formData.sex} onChange={handleChange} />
+          </div>
+          <div>
+            <Label>Petsa ng Kapanganakan</Label>
+            <Input
+              type="date"
+              name="birthday"
+              value={formData.birthday}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="col-span-1 md:col-span-2">
+            <Label>Address</Label>
+            <Textarea
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label>Numero ng Telepono</Label>
+            <Input
+              name="contactNumber"
+              value={formData.contactNumber}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label>Taas (cm)</Label>
+            <Input
+              type="number"
+              name="height"
+              value={formData.height}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <Label>Timbang (kg)</Label>
+            <Input
+              type="number"
+              name="weight"
+              value={formData.weight}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        {/* Right Section: Medical Information */}
+        <div className="flex flex-col justify-between">
+          <h2 className="text-lg font-semibold text-gray-700 mb-2 text-center md:text-left">
+            Medikal na Impormasyon
+          </h2>
+          <div>
+            <h3 className="text-md font-semibold text-gray-700 mb-2">
+              Ano ang iyong karamdamang nais mong ipakonsulta?
+            </h3>
+            <Textarea
+              name="symptoms"
+              value={formData.symptoms}
+              onChange={handleChange}
+              placeholder="Ilagay ang iyong sagot dito..."
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+            <div>
+              <Label>Blood Pressure (mmHg)</Label>
+              <div className="flex gap-2">
+                <Input
+                  name="systolic"
+                  type="number"
+                  value={formData.systolic}
+                  onChange={handleChange}
+                  placeholder="Systolic"
+                />
+                <Input
+                  name="diastolic"
+                  type="number"
+                  value={formData.diastolic}
+                  onChange={handleChange}
+                  placeholder="Diastolic"
+                />
+              </div>
+            </div>
+            <div>
+              <Label>Oxygen Saturation (% SpO2)</Label>
+              <Input
+                type="number"
+                name="oxygenSaturation"
+                value={formData.oxygenSaturation}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label>Temperatura (°C)</Label>
+              <Input
+                type="number"
+                name="temperature"
+                value={formData.temperature}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        {/* Prescription Modal */}
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="flex-1 flex items-center gap-3">
-              <FaUserMd className="text-xl" />
-              Request Prescription
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <h2 className="text-2xl font-bold mb-4">Request Prescription</h2>
-            <textarea
-              className="w-full p-3 border rounded-lg mb-4"
-              placeholder="Describe your symptoms..."
-              rows={4}
-            />
-            <div className="flex justify-end gap-4">
-              <Button variant="secondary">Cancel</Button>
-              <Button>Submit Request</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-
-        {/* Video Consultation Button */}
-        <Button className="flex-1 flex items-center gap-3 bg-green-600 hover:bg-green-700">
-          <FaVideo className="text-xl" />
-          Start Video Consultation
+      {/* Navigation Buttons */}
+      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl mt-6">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 justify-center md:justify-start w-full md:w-auto"
+        >
+          <FaChevronLeft /> Bumalik
+        </Button>
+        <Button className="flex items-center gap-2 justify-center md:justify-end w-full md:w-auto mt-4 md:mt-0">
+          Susunod <FaChevronRight />
         </Button>
       </div>
     </div>
-  );
-}
-
-// MetricCard Component with Recharts
-function MetricCard({
-  title,
-  icon,
-  value,
-  subValue,
-  chartData,
-}: MetricCardProps) {
-  return (
-    <Card>
-      <CardHeader className="flex flex-row items-center gap-4">
-        <div className="p-3 bg-blue-100 rounded-full">{icon}</div>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-3xl font-bold text-blue-600">{value}</div>
-        {subValue && <p className="text-gray-600 mb-4">{subValue}</p>}
-        <div className="mt-4 h-40">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="day" />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey="value" stroke="#8884d8" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </CardContent>
-    </Card>
   );
 }
