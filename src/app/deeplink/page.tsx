@@ -10,9 +10,9 @@ export default function HealthAppsPage() {
 
   useEffect(() => {
     // Detect platform on client side
-    const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+    const userAgent = navigator.userAgent || navigator.vendor || ""
     setIsAndroid(/android/i.test(userAgent))
-    setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream)
+    setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !("MSStream" in window))
   }, [])
 
   const openOmronApp = () => {
