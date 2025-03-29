@@ -75,7 +75,7 @@ export default function KioskDashboard() {
 
           {/* Time & Date Display (Rendered only after mount) */}
           {currentTime && currentDate && (
-            <div className="text-center sm:text-right">
+            <div className="absolute top-4 right-6 flex flex-col items-center sm:items-end">
               <p className="text-lg font-semibold text-gray-900">
                 {currentTime}
               </p>
@@ -108,14 +108,17 @@ export default function KioskDashboard() {
             {
               icon: <FaUserMd className="text-2xl text-green-600" />,
               text: translations.availableDoctors,
+              onClick: () => router.push("/doctors"),
             },
             {
               icon: <FaComments className="text-2xl text-indigo-600" />,
               text: translations.talkToDoctor,
+              onClick: () => router.push("/consult"),
             },
             {
               icon: <FaPrint className="text-2xl text-purple-600" />,
               text: translations.printPrescription,
+              onClick: () => router.push("/prescriptions"),
             },
           ].map((item, index) => (
             <Card
@@ -134,6 +137,7 @@ export default function KioskDashboard() {
         {/* Logout Button */}
         <div className="mt-6">
           <Button
+            onClick={() => router.push("/form")}
             variant="destructive"
             className="w-full flex items-center justify-center gap-4 p-5 sm:p-6 text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
           >

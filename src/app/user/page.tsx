@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useState, useEffect, ChangeEvent } from "react";
+import { FaChevronLeft, FaChevronRight, FaSave } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ interface FormData {
 }
 
 export default function PatientInformationKiosk() {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     age: "",
@@ -40,6 +42,15 @@ export default function PatientInformationKiosk() {
     temperature: "",
   });
 
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -47,8 +58,17 @@ export default function PatientInformationKiosk() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSave = () => {
+    console.log("Form data saved:", formData);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative">
+      {/* Time Display */}
+      <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold">
+        {time.toLocaleTimeString()}
+      </div>
+
       {/* Title */}
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 text-center">
         Patient Information System
@@ -186,16 +206,29 @@ export default function PatientInformationKiosk() {
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl mt-6">
+      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl mt-6 gap-2">
         <Button
           variant="outline"
-          className="flex items-center gap-2 justify-center md:justify-start w-full md:w-auto"
+          onClick={() => router.push("/dashboard")}
+          className="flex items-center gap-2"
         >
           <FaChevronLeft /> Bumalik
         </Button>
-        <Button className="flex items-center gap-2 justify-center md:justify-end w-full md:w-auto mt-4 md:mt-0">
-          Susunod <FaChevronRight />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            onClick={handleSave}
+            className="flex items-center gap-2"
+          >
+            <FaSave /> Save
+          </Button>
+          <Button
+            onClick={() => router.push("/deeplink")}
+            className="flex items-center gap-2"
+          >
+            Susunod <FaChevronRight />
+          </Button>
+        </div>
       </div>
     </div>
   );
