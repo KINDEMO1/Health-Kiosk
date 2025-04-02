@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function HealthAppsPage() {
@@ -26,31 +25,6 @@ export default function HealthAppsPage() {
     setIsAndroid(/android/i.test(userAgent));
     setIsIOS(/iPad|iPhone|iPod/.test(userAgent) && !("MSStream" in window));
   }, []);
-
-  const openOmronApp = () => {
-    if (isAndroid) {
-      // Android intent format for more reliable deep linking
-      window.location.href =
-        "intent://jp.co.omron.healthcare.omron_connect.ui.SplashScreenActivity#Intent;" +
-        "scheme=omronconnect;" +
-        "package=jp.co.omron.healthcare.omron_connect;" +
-        "S.browser_fallback_url=https://play.google.com/store/apps/details?id=jp.co.omron.healthcare.omron_connect;" +
-        "end";
-    } else if (isIOS) {
-      // iOS URL scheme
-      // Try to open the app first
-      window.location.href = "omronconnect://";
-
-      // Fallback to App Store after a short delay if app isn't installed
-      setTimeout(() => {
-        window.location.href =
-          "https://apps.apple.com/app/omron-connect/id1003177043";
-      }, 500);
-    } else {
-      // Fallback for other platforms
-      window.location.href = "omronconnect://";
-    }
-  };
 
   const openHealthTreeApp = () => {
     if (isAndroid) {

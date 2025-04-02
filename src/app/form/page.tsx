@@ -71,7 +71,7 @@ export default function HealthKiosk() {
             <DialogHeader>
               <DialogTitle>Admin Access</DialogTitle>
             </DialogHeader>
-            <p className="text-gray-600 mb-4">Enter admin access code:</p>
+            <p className="text-gray-600 mb-4">Enter Healthcare Admin Access:</p>
             <Input
               type="password"
               value={adminCode}

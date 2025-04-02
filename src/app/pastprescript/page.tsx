@@ -38,7 +38,7 @@ export default function PrescriptionsPage() {
       <div className="absolute bottom-6 left-6">
         <Button
           variant="ghost"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push("/patientdata")}
           className="flex items-center gap-2"
         >
           <FaArrowLeft /> Back to Dashboard
