@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { IoArrowBack } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa"; // Longer arrow icon
 import {
   FaUser,
   FaBriefcaseMedical,
@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getAuth, signOut } from "firebase/auth";
-import { app } from "@/lib/firebase";
 
 export default function DoctorsHomePage() {
   const router = useRouter();
@@ -61,10 +60,10 @@ export default function DoctorsHomePage() {
   };
 
   const handleLogout = async () => {
-    const auth = getAuth(app);
+    const auth = getAuth();
     try {
-      await signOut(auth); // Log the user out of Firebase
-      router.push("/form"); // Redirect to /form after logout
+      await signOut(auth);
+      router.push("/form");
     } catch (error) {
       console.error("Error signing out: ", error);
     }
@@ -73,13 +72,15 @@ export default function DoctorsHomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center p-4">
       <div className="w-[700px] max-w-full px-4 sm:px-8">
+        {/* Header with Time & Language Toggle */}
         <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-4">
           <Button
             variant="ghost"
-            size="icon"
+            size="lg" // Larger button size
             onClick={() => router.push("/form")}
+            className="p-6"
           >
-            <IoArrowBack size={28} className="text-gray-700" />
+            <FaArrowLeft size={48} className="text-gray-700" />{" "}
           </Button>
 
           {currentTime && currentDate && (
@@ -94,17 +95,19 @@ export default function DoctorsHomePage() {
           <Button
             variant="outline"
             onClick={() => setIsEnglish(!isEnglish)}
-            className="px-4 sm:px-6 py-2 text-blue-700 text-lg font-semibold"
+            className="px-6 py-3 text-blue-700 text-lg font-semibold"
           >
             {isEnglish ? "Filipino" : "English"}
           </Button>
         </div>
 
+        {/* Title */}
         <h1 className="text-3xl font-extrabold text-center text-gray-900 mt-2">
           {translations.homepage}
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+        {/* Buttons Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
           {[
             {
               icon: <FaUser className="text-2xl text-blue-600" />,
@@ -129,28 +132,30 @@ export default function DoctorsHomePage() {
           ].map((item, index) => (
             <Card
               key={index}
-              className="w-full flex flex-col items-center justify-center gap-4 p-5 sm:p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white text-center"
+              className="w-full flex flex-col justify-center items-center gap-4 p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white"
               onClick={item.onClick}
             >
               {item.icon}
-              <span className="text-lg sm:text-xl font-semibold">
+              <span className="text-xl font-semibold text-center">
                 {item.text}
               </span>
             </Card>
           ))}
         </div>
 
+        {/* Logout Button */}
         <div className="mt-6">
           <Button
             onClick={handleLogout}
             variant="destructive"
-            className="w-full flex items-center justify-center gap-4 p-5 sm:p-6 text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
+            className="w-full flex items-center justify-center gap-4 p-6 text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
           >
             <FaSignOutAlt className="text-2xl" />
             {translations.logout}
           </Button>
         </div>
 
+        {/* Footer */}
         <div className="mt-10 text-gray-500 text-lg font-medium text-center">
           eKonsulTech
         </div>

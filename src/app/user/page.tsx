@@ -22,6 +22,7 @@ interface FormData {
   diastolic: string;
   oxygenSaturation: string;
   temperature: string;
+  pulserate: string;
 }
 
 export default function PatientInformationKiosk() {
@@ -40,6 +41,7 @@ export default function PatientInformationKiosk() {
     diastolic: "",
     oxygenSaturation: "",
     temperature: "",
+    pulserate: "",
   });
 
   const [time, setTime] = useState(new Date());
@@ -59,11 +61,18 @@ export default function PatientInformationKiosk() {
   };
 
   const handleSave = () => {
+    // Log the form data to the console
     console.log("Form data saved:", formData);
+
+    // Example: Store in localStorage (optional)
+    localStorage.setItem("patientFormData", JSON.stringify(formData));
+
+    // Optionally, provide feedback to the user
+    alert("Data saved successfully!");
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative">
+    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center justify-center relative">
       {/* Time Display */}
       <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold">
         {time.toLocaleTimeString()}
@@ -75,7 +84,7 @@ export default function PatientInformationKiosk() {
       </h1>
 
       {/* Form Container */}
-      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto">
         {/* Left Section: Personal Information */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <h2 className="col-span-1 md:col-span-2 text-lg font-semibold text-gray-700 mb-2 text-center md:text-left">
@@ -161,6 +170,7 @@ export default function PatientInformationKiosk() {
               value={formData.symptoms}
               onChange={handleChange}
               placeholder="Ilagay ang iyong sagot dito..."
+              className="resize-none overflow-auto h-32"
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
@@ -201,12 +211,21 @@ export default function PatientInformationKiosk() {
                 onChange={handleChange}
               />
             </div>
+            <div>
+              <Label>Pulse Rate (bpm)</Label>
+              <Input
+                type="number"
+                name="pulserate"
+                value={formData.pulserate}
+                onChange={handleChange}
+              />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl mt-6 gap-2">
+      <div className="flex flex-col md:flex-row justify-between w-full max-w-5xl mt-6 gap-2 mx-auto">
         <Button
           variant="outline"
           onClick={() => router.push("/dashboard")}

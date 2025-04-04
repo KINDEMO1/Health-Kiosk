@@ -84,7 +84,7 @@ export default function AvailableDoctors() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative">
+    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative pt-20">
       {/* Time Display */}
       <TimeDisplay />
 
@@ -109,7 +109,7 @@ export default function AvailableDoctors() {
       </div>
 
       {/* Doctor List Table */}
-      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6">
+      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 mb-6 flex justify-center">
         <Table>
           <TableHeader>
             <TableRow>

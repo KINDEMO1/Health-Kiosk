@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { IoArrowBack } from "react-icons/io5";
+import { FaArrowLeft } from "react-icons/fa"; // Importing longer arrow icon
 import {
   FaUser,
   FaUserMd,
@@ -67,10 +67,12 @@ export default function KioskDashboard() {
         <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-4">
           <Button
             variant="ghost"
-            size="icon"
+            size="lg" // Larger button size
             onClick={() => router.push("/form")}
+            className="p-6" // Increased padding for larger button
           >
-            <IoArrowBack size={28} className="text-gray-700" />
+            <FaArrowLeft size={48} className="text-gray-700" />{" "}
+            {/* Larger and longer icon */}
           </Button>
 
           {/* Time & Date Display (Rendered only after mount) */}
@@ -86,7 +88,7 @@ export default function KioskDashboard() {
           <Button
             variant="outline"
             onClick={() => setIsEnglish(!isEnglish)}
-            className="px-4 sm:px-6 py-2 text-blue-700 text-lg font-semibold"
+            className="px-6 py-3 text-blue-700 text-lg font-semibold"
           >
             {isEnglish ? "Filipino" : "English"}
           </Button>
@@ -98,7 +100,7 @@ export default function KioskDashboard() {
         </h1>
 
         {/* Buttons Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
           {[
             {
               icon: <FaUser className="text-2xl text-blue-600" />,
@@ -123,13 +125,11 @@ export default function KioskDashboard() {
           ].map((item, index) => (
             <Card
               key={index}
-              className="w-full flex items-center gap-4 p-5 sm:p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white"
+              className="w-full flex items-center gap-4 p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white"
               onClick={item.onClick}
             >
               {item.icon}
-              <span className="text-lg sm:text-xl font-semibold">
-                {item.text}
-              </span>
+              <span className="text-xl font-semibold">{item.text}</span>
             </Card>
           ))}
         </div>
@@ -139,7 +139,7 @@ export default function KioskDashboard() {
           <Button
             onClick={() => router.push("/form")}
             variant="destructive"
-            className="w-full flex items-center justify-center gap-4 p-5 sm:p-6 text-lg sm:text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
+            className="w-full flex items-center justify-center gap-4 p-6 text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
           >
             <FaSignOutAlt className="text-2xl" />
             {translations.logout}

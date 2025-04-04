@@ -77,15 +77,15 @@ export default function AvailableDoctors() {
   }, [search]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative">
+    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative pt-20">
+      {" "}
+      {/* Add padding top here */}
       {/* Time Display */}
       <TimeDisplay />
-
       {/* Title */}
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 text-center w-full">
         Available Doctors
       </h1>
-
       {/* Search Input */}
       <div className="relative w-full max-w-5xl mb-4">
         <FiSearch
@@ -100,10 +100,9 @@ export default function AvailableDoctors() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-
       {/* Doctor List Table */}
-      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6">
-        <Table>
+      <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 mb-6 flex justify-center">
+        <Table className="w-full">
           <TableHeader>
             <TableRow>
               <TableHead>Doctor Name</TableHead>
@@ -186,7 +185,6 @@ export default function AvailableDoctors() {
           </TableBody>
         </Table>
       </div>
-
       {/* Back Button */}
       <div className="w-full max-w-5xl mt-6 flex justify-start">
         <Button

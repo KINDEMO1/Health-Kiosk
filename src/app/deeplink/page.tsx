@@ -3,11 +3,22 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // Assuming you have a modal component
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 export default function HealthAppsPage() {
   const [time, setTime] = useState(new Date());
   const router = useRouter();
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -15,9 +26,6 @@ export default function HealthAppsPage() {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  const [isAndroid, setIsAndroid] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     // Detect platform on client side
@@ -85,6 +93,52 @@ export default function HealthAppsPage() {
       >
         Bumalik
       </Button>
+
+      {/* Instruction Modal */}
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="absolute top-6 right-6" variant="outline">
+            Open Instructions
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Instruction Manual</DialogTitle>
+            <DialogDescription>
+              Welcome to the Health Monitoring Apps page! Before you proceed,
+              please take a moment to review the following instructions for
+              using the apps.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <h3 className="font-semibold">1. Blood Pressure - Omron Connect</h3>
+            <p>
+              This app allows you to monitor your blood pressure using the Omron
+              Connect device. Follow the instructions in the app for accurate
+              readings.
+            </p>
+            <h3 className="font-semibold">2. Oxygen Saturation - HealthTree</h3>
+            <p>
+              The HealthTree app helps you track your oxygen saturation levels.
+              Ensure the app is installed and connected to your device for
+              monitoring.
+            </p>
+            <h3 className="font-semibold">
+              3. Temperature - Beurer Health Manager
+            </h3>
+            <p>
+              The Beurer app allows you to track your body temperature. Pair
+              your Beurer device with the app to get the most accurate
+              temperature readings.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => alert("Proceeding with instructions")}>
+              I understand, proceed
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <h1 className="text-4xl font-extrabold text-center mb-8">
         Health Monitoring Apps

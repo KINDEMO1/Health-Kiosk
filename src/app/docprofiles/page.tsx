@@ -44,40 +44,40 @@ export default function DoctorProfile() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-white p-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-blue-100 to-white p-8 lg:p-12">
       {/* Header Section */}
-      <div className="w-full max-w-[700px] flex items-center justify-between mb-4">
+      <div className="w-full max-w-[700px] flex items-center justify-between mb-6">
         {/* Back Button */}
         <Button
           variant="ghost"
-          size="icon"
+          size="lg"
           onClick={() => router.back()}
-          className="text-gray-700"
+          className="text-gray-700 p-4"
         >
-          <IoArrowBack size={28} />
+          <IoArrowBack size={32} />
         </Button>
         {/* Title */}
-        <h1 className="text-2xl font-bold text-gray-800 text-center flex-1">
+        <h1 className="text-3xl font-bold text-gray-800 text-center flex-1">
           eKonsulTech
         </h1>
         {/* Placeholder for symmetry */}
         <div className="w-8"></div>
       </div>
 
-      <Card className="w-[700px] max-w-full shadow-lg rounded-2xl p-6 flex flex-col gap-6">
+      <Card className="w-full max-w-[700px] shadow-xl rounded-2xl p-8 flex flex-col gap-8">
         {/* Section Title */}
-        <h2 className="text-xl font-bold text-gray-900 text-center">
+        <h2 className="text-2xl font-bold text-gray-900 text-center">
           Doctor’s Personal Information
         </h2>
 
-        <div className="flex flex-col sm:flex-row items-center gap-6">
+        <div className="flex flex-col sm:flex-row items-center gap-8">
           {/* Profile Picture */}
-          <div className="relative w-40 h-40">
-            <Avatar className="w-40 h-40 border-4 border-gray-300">
+          <div className="relative w-48 h-48">
+            <Avatar className="w-48 h-48 border-4 border-gray-300">
               {newInfo.profileImage ? (
                 <AvatarImage src={newInfo.profileImage} alt="Doctor Profile" />
               ) : (
-                <AvatarFallback className="text-gray-500 text-5xl">
+                <AvatarFallback className="text-gray-500 text-6xl">
                   <FaUserMd />
                 </AvatarFallback>
               )}
@@ -86,13 +86,13 @@ export default function DoctorProfile() {
 
           {/* Doctor Info */}
           <div className="flex-1">
-            <p className="text-lg font-semibold text-gray-800">
+            <p className="text-xl font-semibold text-gray-800">
               <strong>Name:</strong> {doctorInfo.name}
             </p>
-            <p className="text-lg text-gray-600 mt-2">
+            <p className="text-xl text-gray-600 mt-3">
               <strong>Specialization:</strong> {doctorInfo.specialization}
             </p>
-            <p className="text-lg text-gray-600 mt-2">
+            <p className="text-xl text-gray-600 mt-3">
               <strong>Clinic Hours:</strong> {doctorInfo.clinicHours}
             </p>
 
@@ -101,7 +101,8 @@ export default function DoctorProfile() {
               <DialogTrigger asChild>
                 <Button
                   variant="outline"
-                  className="mt-4 px-6 py-2 text-blue-700 font-semibold"
+                  size="lg"
+                  className="mt-6 px-8 py-3 text-blue-700 font-semibold"
                 >
                   Update Profile
                 </Button>
@@ -110,10 +111,10 @@ export default function DoctorProfile() {
                 <DialogHeader>
                   <DialogTitle>Update Doctor Profile</DialogTitle>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-6 py-6">
                   {/* Profile Image Upload */}
-                  <div className="flex flex-col items-center gap-2">
-                    <Label>Profile Picture</Label>
+                  <div className="flex flex-col items-center gap-3">
+                    <Label className="text-xl">Profile Picture</Label>
                     <input
                       type="file"
                       accept="image/*"
@@ -123,7 +124,7 @@ export default function DoctorProfile() {
                     />
                     <label
                       htmlFor="fileUpload"
-                      className="cursor-pointer text-blue-600 hover:underline"
+                      className="cursor-pointer text-blue-600 hover:underline text-lg"
                     >
                       {selectedImage
                         ? "Change Profile Picture"
@@ -133,19 +134,24 @@ export default function DoctorProfile() {
 
                   {/* Name */}
                   <div>
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name" className="text-xl">
+                      Name
+                    </Label>
                     <Input
                       id="name"
                       value={newInfo.name}
                       onChange={(e) =>
                         setNewInfo({ ...newInfo, name: e.target.value })
                       }
+                      className="text-lg py-3"
                     />
                   </div>
 
                   {/* Specialization */}
                   <div>
-                    <Label htmlFor="specialization">Specialization</Label>
+                    <Label htmlFor="specialization" className="text-xl">
+                      Specialization
+                    </Label>
                     <Input
                       id="specialization"
                       value={newInfo.specialization}
@@ -155,23 +161,29 @@ export default function DoctorProfile() {
                           specialization: e.target.value,
                         })
                       }
+                      className="text-lg py-3"
                     />
                   </div>
 
                   {/* Clinic Hours */}
                   <div>
-                    <Label htmlFor="clinicHours">Clinic Hours</Label>
+                    <Label htmlFor="clinicHours" className="text-xl">
+                      Clinic Hours
+                    </Label>
                     <Input
                       id="clinicHours"
                       value={newInfo.clinicHours}
                       onChange={(e) =>
                         setNewInfo({ ...newInfo, clinicHours: e.target.value })
                       }
+                      className="text-lg py-3"
                     />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button onClick={handleUpdate}>Save Changes</Button>
+                  <Button size="lg" onClick={handleUpdate}>
+                    Save Changes
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>

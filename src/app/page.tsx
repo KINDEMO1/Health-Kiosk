@@ -10,6 +10,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 const products = [
   {
@@ -36,6 +37,13 @@ const products = [
 
 export default function HealthcareKiosk() {
   const router = useRouter();
+  const session = useSession(); // Get current session
+  const supabase = useSupabaseClient(); // Access Supabase client
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+  };
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center p-4 md:p-8">
@@ -46,12 +54,10 @@ export default function HealthcareKiosk() {
             {products.map((product) => (
               <CarouselItem key={product.id} className="flex justify-center">
                 <Card className="w-full h-[600px] p-10 rounded-xl shadow-xl flex flex-col items-center justify-start bg-white hover:bg-blue-50 transition-all duration-300">
-                  {/* Title as Card Header */}
                   <h3 className="text-2xl md:text-3xl font-semibold mb-4">
                     {product.title}
                   </h3>
 
-                  {/* Larger Image */}
                   <Image
                     src={product.image}
                     alt={product.title}
@@ -60,7 +66,6 @@ export default function HealthcareKiosk() {
                     className="w-full h-[350px] object-cover rounded-none"
                   />
 
-                  {/* Description Below Image */}
                   <p className="text-center mt-4 text-gray-600 text-sm md:text-base">
                     {product.description}
                   </p>
@@ -69,7 +74,6 @@ export default function HealthcareKiosk() {
             ))}
           </CarouselContent>
 
-          {/* Responsive Navigation Buttons */}
           <CarouselPrevious className="absolute left-2 top-1/2 transform -translate-y-1/2 scale-90 md:scale-100" />
           <CarouselNext className="absolute right-2 top-1/2 transform -translate-y-1/2 scale-90 md:scale-100" />
         </Carousel>
@@ -86,14 +90,23 @@ export default function HealthcareKiosk() {
           solutions. Access medical services, track your health, and connect
           with professionals all in one place.
         </p>
-        <Button
-          onClick={() => router.push("/form")}
-          className="mt-4 md:mt-6 px-6 md:px-8 py-3 md:py-4 bg-blue-500 text-white rounded-full text-base md:text-lg font-semibold hover:bg-blue-600 transition-all duration-300 shadow-lg"
-        >
-          Get Started
-        </Button>
 
-        {/* Why Choose Us? */}
+        {session ? (
+          <Button
+            onClick={handleSignOut}
+            className="mt-4 md:mt-6 px-6 md:px-8 py-3 md:py-4 bg-red-500 text-white rounded-full text-base md:text-lg font-semibold hover:bg-red-600 transition-all duration-300 shadow-lg"
+          >
+            Sign Out
+          </Button>
+        ) : (
+          <Button
+            onClick={() => router.push("/form")}
+            className="mt-4 md:mt-6 px-6 md:px-8 py-3 md:py-4 bg-blue-500 text-white rounded-full text-base md:text-lg font-semibold hover:bg-blue-600 transition-all duration-300 shadow-lg"
+          >
+            Get Started
+          </Button>
+        )}
+
         <div className="mt-6 md:mt-8 p-4 md:p-6 rounded-xl w-full max-w-[500px] md:max-w-[700px] bg-blue-50">
           <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">
             Why Choose Us?
