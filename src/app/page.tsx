@@ -47,7 +47,36 @@ export default function HealthcareKiosk() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center p-4 md:p-8">
-      {/* Left Side - Product Carousel */}
+      {/* Header */}
+      <header className="w-full bg-blue-500 p-2 shadow-lg fixed top-0 left-0 z-10">
+        <div className="flex justify-between items-center max-w-screen-xl mx-auto">
+          <h1 className="text-white text-2xl font-semibold">eKonsulTech</h1>
+          <nav>
+            <ul className="flex space-x-6 text-white text-lg">
+              <li>
+                <Button
+                  variant="link"
+                  className="text-white hover:text-blue-300"
+                  onClick={() => router.push("/about")}
+                >
+                  About
+                </Button>
+              </li>
+              <li>
+                <Button
+                  variant="link"
+                  className="text-white hover:text-blue-300"
+                  onClick={() => router.push("/contacts")}
+                >
+                  Contacts
+                </Button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content */}
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-4">
         <Carousel className="w-full max-w-[700px] md:max-w-[800px] lg:max-w-[900px]">
           <CarouselContent>

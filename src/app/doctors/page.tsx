@@ -67,6 +67,10 @@ export default function AvailableDoctors() {
   const [search, setSearch] = useState("");
   const [filteredDoctors, setFilteredDoctors] = useState(doctorsList);
   const [selectedPDF, setSelectedPDF] = useState<string | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [meetingLink, setMeetingLink] = useState<string | null>(null);
+  const [showOfflineDialog, setShowOfflineDialog] = useState(false);
 
   useEffect(() => {
     setFilteredDoctors(
@@ -76,16 +80,28 @@ export default function AvailableDoctors() {
     );
   }, [search]);
 
+  const handleRequestConsultation = () => {
+    if (selectedDoctor?.availability === "Offline") {
+      setShowOfflineDialog(true); // Show offline dialog if doctor is offline
+    } else {
+      setLoading(true);
+      setTimeout(() => {
+        setMeetingLink("https://meet.google.com/example-meeting"); // Dummy link
+        setLoading(false);
+      }, 2000);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center relative pt-20">
-      {" "}
-      {/* Add padding top here */}
       {/* Time Display */}
       <TimeDisplay />
+
       {/* Title */}
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 text-center w-full">
         Available Doctors
       </h1>
+
       {/* Search Input */}
       <div className="relative w-full max-w-5xl mb-4">
         <FiSearch
@@ -100,15 +116,17 @@ export default function AvailableDoctors() {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+
       {/* Doctor List Table */}
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 mb-6 flex justify-center">
-        <Table className="w-full">
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Doctor Name</TableHead>
               <TableHead>Specialization</TableHead>
               <TableHead>Availability</TableHead>
               <TableHead>Profile</TableHead>
+              <TableHead>Consultation</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -170,12 +188,25 @@ export default function AvailableDoctors() {
                       )}
                     </Dialog>
                   </TableCell>
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="ml-4"
+                          onClick={() => setSelectedDoctor(doctor)}
+                        >
+                          Request Consultation
+                        </Button>
+                      </DialogTrigger>
+                    </Dialog>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={4}
+                  colSpan={5}
                   className="text-center py-4 text-gray-500"
                 >
                   No doctors found.
@@ -185,6 +216,61 @@ export default function AvailableDoctors() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Doctor Consultation Dialog */}
+      {selectedDoctor && (
+        <Dialog
+          open={!!selectedDoctor}
+          onOpenChange={() => setSelectedDoctor(null)}
+        >
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                Request Consultation with {selectedDoctor.name}
+              </DialogTitle>
+            </DialogHeader>
+            <p>Specialization: {selectedDoctor.specialization}</p>
+            <Button onClick={handleRequestConsultation} disabled={loading}>
+              {loading ? "Requesting..." : "Request Consultation"}
+            </Button>
+            {meetingLink && (
+              <div className="mt-4 p-4 border rounded bg-gray-100">
+                <p>Google Meet Link:</p>
+                <a
+                  href={meetingLink}
+                  target="_blank"
+                  className="text-blue-600 underline"
+                >
+                  {meetingLink}
+                </a>
+              </div>
+            )}
+            <Button
+              variant="destructive"
+              onClick={() => setSelectedDoctor(null)}
+            >
+              <FiX /> Close
+            </Button>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Offline Doctor Dialog */}
+      <Dialog open={showOfflineDialog} onOpenChange={setShowOfflineDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Doctor Unavailable</DialogTitle>
+          </DialogHeader>
+          <p>The Doctor is currently offline or unavailable.</p>
+          <Button
+            variant="destructive"
+            onClick={() => setShowOfflineDialog(false)}
+          >
+            <FiX /> Close
+          </Button>
+        </DialogContent>
+      </Dialog>
+
       {/* Back Button */}
       <div className="w-full max-w-5xl mt-6 flex justify-start">
         <Button

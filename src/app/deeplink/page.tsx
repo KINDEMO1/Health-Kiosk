@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useRouter } from "next/navigation"; // Assuming you have a modal component
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogTrigger,
@@ -81,15 +81,15 @@ export default function HealthAppsPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6 relative">
       {/* Time Display */}
-      <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold">
+      <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold z-10">
         {time.toLocaleTimeString()}
       </div>
 
       {/* Bumalik Button */}
       <Button
         variant="outline"
-        className="absolute top-4 left-6"
-        onClick={() => router.push("/user")}
+        className="absolute top-6 left-6 z-10"
+        onClick={() => router.push("/medinfo")}
       >
         Bumalik
       </Button>
@@ -97,7 +97,7 @@ export default function HealthAppsPage() {
       {/* Instruction Modal */}
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="absolute top-6 right-6" variant="outline">
+          <Button className="absolute top-16 right-6 z-10" variant="outline">
             Open Instructions
           </Button>
         </DialogTrigger>
@@ -145,7 +145,7 @@ export default function HealthAppsPage() {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
         {/* BP Card */}
-        <Card className="w-full p-6 shadow-lg">
+        <Card className="w-full p-6 shadow-lg hover:bg-blue-50">
           <CardHeader>
             <CardTitle className="text-2xl text-center">
               Blood Pressure
@@ -155,14 +155,14 @@ export default function HealthAppsPage() {
             <p className="text-gray-600 mb-6 text-center">
               Monitor your BP using the Omron Connect app.
             </p>
-            <Button className="w-full py-3 text-lg">
+            <Button className="w-full py-3 text-lg bg-blue-600 text-white hover:bg-blue-700 mt-6">
               BP - Omron Connect app
             </Button>
           </CardContent>
         </Card>
 
         {/* Oxygen Saturation Card */}
-        <Card className="w-full p-6 shadow-lg">
+        <Card className="w-full p-6 shadow-lg hover:bg-green-50">
           <CardHeader>
             <CardTitle className="text-2xl text-center">
               Oxygen Saturation
@@ -172,14 +172,17 @@ export default function HealthAppsPage() {
             <p className="text-gray-600 mb-6 text-center">
               Check your oxygen levels with the HealthTree app.
             </p>
-            <Button className="w-full py-3 text-lg" onClick={openHealthTreeApp}>
+            <Button
+              className="w-full py-3 text-lg bg-green-600 text-white hover:bg-green-700 mt-6"
+              onClick={openHealthTreeApp}
+            >
               OxySat - HealthTree app
             </Button>
           </CardContent>
         </Card>
 
         {/* Temperature Card */}
-        <Card className="w-full p-6 shadow-lg">
+        <Card className="w-full p-6 shadow-lg hover:bg-red-50">
           <CardHeader>
             <CardTitle className="text-2xl text-center">
               Body Temperature
@@ -189,7 +192,10 @@ export default function HealthAppsPage() {
             <p className="text-gray-600 mb-6 text-center">
               Track your temperature using the Beurer Health Manager Pro App.
             </p>
-            <Button className="w-full py-3 text-lg" onClick={openBeurerApp}>
+            <Button
+              className="w-full py-3 text-lg bg-red-600 text-white hover:bg-red-700"
+              onClick={openBeurerApp}
+            >
               Temperature - Beurer
             </Button>
           </CardContent>

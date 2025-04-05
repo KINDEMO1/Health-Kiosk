@@ -5,9 +5,9 @@ import { FaArrowLeft } from "react-icons/fa"; // Importing longer arrow icon
 import {
   FaUser,
   FaUserMd,
-  FaComments,
   FaPrint,
   FaSignOutAlt,
+  FaHeartbeat, // Replaced with a more appropriate medical icon
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -57,6 +57,9 @@ export default function KioskDashboard() {
     talkToDoctor: isEnglish ? "Talk to a Doctor" : "Makipag-usap sa Doktor",
     printPrescription: isEnglish ? "Print Prescription" : "Iprint ang reseta",
     logout: isEnglish ? "Logout" : "Mag Log out",
+    medicalInformation: isEnglish
+      ? "Medical Information"
+      : "Impormasyon Medikal", // Correct translation
   };
 
   return (
@@ -113,9 +116,9 @@ export default function KioskDashboard() {
               onClick: () => router.push("/doctors"),
             },
             {
-              icon: <FaComments className="text-2xl text-indigo-600" />,
-              text: translations.talkToDoctor,
-              onClick: () => router.push("/consult"),
+              icon: <FaHeartbeat className="text-2xl text-red-600" />, // Changed to FaHeartbeat for medical info
+              text: translations.medicalInformation, // Updated text
+              onClick: () => router.push("/medinfo"), // Adjusted route if needed
             },
             {
               icon: <FaPrint className="text-2xl text-purple-600" />,
@@ -125,7 +128,7 @@ export default function KioskDashboard() {
           ].map((item, index) => (
             <Card
               key={index}
-              className="w-full flex items-center gap-4 p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white"
+              className="w-full flex flex-col items-center justify-center gap-4 p-6 rounded-2xl shadow-md transition-all duration-200 hover:scale-105 cursor-pointer bg-white text-center"
               onClick={item.onClick}
             >
               {item.icon}
