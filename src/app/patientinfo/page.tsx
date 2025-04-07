@@ -198,7 +198,7 @@ export default function PatientInformationKiosk() {
           </div>
 
           <div>
-            <Label>Patient's Complaint</Label>
+            <Label>Patient&apos;s Complaint</Label>
             <Textarea
               name="symptoms"
               value={formData.symptoms}
@@ -209,7 +209,7 @@ export default function PatientInformationKiosk() {
           </div>
 
           <div>
-            <Label>Doctor's Note</Label>
+            <Label>Doctor&apos;s Note</Label>
             <Textarea
               name="doctorNote"
               value={formData.doctorNote}

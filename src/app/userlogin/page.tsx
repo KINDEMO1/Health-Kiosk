@@ -4,15 +4,12 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
-import { auth, googleProvider, signInWithPopup, signOut } from "@/lib/firebase"; // Correct import
+import { auth, googleProvider, signInWithPopup } from "@/lib/firebase"; // Correct import
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [isPhoneLogin, setIsPhoneLogin] = useState(false); // Track if phone login is selected
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState("");
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
   // Handle Google Sign-In
@@ -24,7 +21,6 @@ export default function AuthPage() {
       router.push("/dashboard"); // Navigate to the dashboard or another page after login
     } catch (error) {
       console.error("Error during Google sign-in:", error);
-      setErrorMessage("Failed to sign in with Google. Please try again.");
     }
   };
 

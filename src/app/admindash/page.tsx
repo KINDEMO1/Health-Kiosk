@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { FaArrowLeft } from "react-icons/fa"; // Longer arrow icon
 import {
   FaUser,
   FaBriefcaseMedical,
