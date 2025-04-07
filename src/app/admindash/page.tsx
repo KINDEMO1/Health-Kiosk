@@ -11,7 +11,8 @@ import {
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getAuth, signOut } from "firebase/auth";
+import { auth, signOut } from "@/lib/firebase";
+
 
 export default function DoctorsHomePage() {
   const router = useRouter();
@@ -60,7 +61,6 @@ export default function DoctorsHomePage() {
   };
 
   const handleLogout = async () => {
-    const auth = getAuth();
     try {
       await signOut(auth);
       router.push("/form");
@@ -74,14 +74,14 @@ export default function DoctorsHomePage() {
       <div className="w-[700px] max-w-full px-4 sm:px-8">
         {/* Header with Time & Language Toggle */}
         <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-4">
-          <Button
+          {/* <Button
             variant="ghost"
             size="lg" // Larger button size
             onClick={() => router.push("/form")}
             className="p-6"
           >
             <FaArrowLeft size={48} className="text-gray-700" />{" "}
-          </Button>
+          </Button> */}
 
           {currentTime && currentDate && (
             <div className="absolute top-4 right-6 flex flex-col items-center sm:items-end">

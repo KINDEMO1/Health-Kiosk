@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { FaArrowLeft } from "react-icons/fa"; // Importing longer arrow icon
+import { FaChevronLeft, FaSave } from "react-icons/fa";
 import {
   FaUser,
   FaUserMd,
@@ -68,15 +68,13 @@ export default function KioskDashboard() {
       <div className="w-[700px] max-w-full px-4 sm:px-8">
         {/* Header with Time & Language Toggle */}
         <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-4">
-          <Button
-            variant="ghost"
-            size="lg" // Larger button size
-            onClick={() => router.push("/form")}
-            className="p-6" // Increased padding for larger button
-          >
-            <FaArrowLeft size={48} className="text-gray-700" />{" "}
-            {/* Larger and longer icon */}
-          </Button>
+          {/* <Button
+                    variant="outline"
+                    onClick={() => router.push("/form")}
+                    className="flex items-center gap-2"
+                  >
+                    <FaChevronLeft /> Bumalik
+                  </Button> */}
 
           {/* Time & Date Display (Rendered only after mount) */}
           {currentTime && currentDate && (

@@ -1,4 +1,5 @@
-import { initializeApp } from "firebase/app";
+// lib/firebase.js
+import { initializeApp, getApps, getApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -18,12 +19,12 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Check if any config value is missing
 if (!firebaseConfig.apiKey) {
   throw new Error("❌ Firebase API Key is missing! Check .env.local");
 }
 
-const app = initializeApp(firebaseConfig);
+// ✅ Initialize Firebase only once
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 

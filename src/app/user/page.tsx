@@ -49,7 +49,7 @@ export default function PersonalInformation() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 flex flex-col items-center justify-center relative">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 flex flex-col items-center justify-center relative">
       <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold">
         {time.toLocaleTimeString()}
       </div>

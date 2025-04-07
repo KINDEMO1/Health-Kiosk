@@ -47,7 +47,7 @@ export default function HealthKiosk() {
           className="w-80 h-80 flex flex-col items-center justify-center rounded-xl bg-teal-50 hover:bg-teal-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg p-6"
           onClick={() => router.push("/userlogin")}
         >
-          <FaUserAlt className="w-24 h-24 text-teal-600 mb-6" />
+          <FaUserAlt className="text-teal-600 mb-6" style={{ width: '5rem', height: '5rem' }} />
           <span className="text-3xl font-semibold text-teal-700 text-center w-full leading-tight">
             Mag Log-in <br /> bilang Pasyente
           </span>
@@ -61,7 +61,7 @@ export default function HealthKiosk() {
               className="w-80 h-80 flex flex-col items-center justify-center rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg p-6"
               onClick={() => setIsDialogOpen(true)}
             >
-              <FaUserCog className="w-24 h-24 text-gray-600 mb-6" />
+              <FaUserCog className="text-gray-600 mb-6" style={{ width: '6rem', height: '6rem' }}/>
               <span className="text-3xl font-semibold text-gray-700 text-center w-full leading-tight">
                 Mag Log-in <br /> bilang Health Worker
               </span>

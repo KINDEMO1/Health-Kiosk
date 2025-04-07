@@ -79,7 +79,7 @@ export default function HealthAppsPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6 relative">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-100 to-white p-6 relative">
       {/* Time Display */}
       <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold z-10">
         {time.toLocaleTimeString()}
@@ -88,7 +88,7 @@ export default function HealthAppsPage() {
       {/* Bumalik Button */}
       <Button
         variant="outline"
-        className="absolute top-6 left-6 z-10"
+        className="absolute top-15 left-65 z-10"
         onClick={() => router.push("/medinfo")}
       >
         Bumalik
@@ -97,7 +97,7 @@ export default function HealthAppsPage() {
       {/* Instruction Modal */}
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="absolute top-16 right-6 z-10" variant="outline">
+          <Button className="absolute top-15 right-65 z-10" variant="outline">
             Open Instructions
           </Button>
         </DialogTrigger>
