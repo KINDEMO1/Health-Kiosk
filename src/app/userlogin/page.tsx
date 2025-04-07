@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
-import { auth, googleProvider, signInWithPopup } from "@/lib/firebase"; // Ensure the correct import path
 import { useRouter } from "next/navigation";
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth"; // Import Firebase's phone authentication methods
+import { auth, googleProvider, signInWithPopup, signOut } from "@/lib/firebase"; // Correct import
 
 export default function AuthPage() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -16,69 +15,16 @@ export default function AuthPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  // Initialize reCAPTCHA for phone sign-in
-  const setupRecaptcha = (phoneNumber: string) => {
-    window.recaptchaVerifier = new RecaptchaVerifier(
-      "recaptcha-container",
-      {
-        size: "invisible",
-        callback: (response: any) => {
-          console.log("reCAPTCHA solved!");
-        },
-      },
-      auth
-    );
-  };
-
   // Handle Google Sign-In
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log("User signed in:", result.user);
-      router.push("/dashboard"); // Redirect to dashboard after login
+      const result = await signInWithPopup(auth, googleProvider); // Using signInWithPopup from firebase.js
+      const user = result.user;
+      console.log("User info: ", user);
+      router.push("/dashboard"); // Navigate to the dashboard or another page after login
     } catch (error) {
-      console.error("Google sign-in error:", error);
-    }
-  };
-
-  // Send OTP to the phone number
-  const handleSendOtp = async () => {
-    if (!phoneNumber) {
-      setErrorMessage("Please enter a valid phone number.");
-      return;
-    }
-
-    setupRecaptcha(phoneNumber);
-
-    const appVerifier = window.recaptchaVerifier;
-
-    try {
-      const confirmationResult = await signInWithPhoneNumber(
-        auth,
-        phoneNumber,
-        appVerifier
-      );
-      window.confirmationResult = confirmationResult;
-      setIsOtpSent(true);
-      setErrorMessage("");
-      console.log("OTP sent!");
-    } catch (error) {
-      setErrorMessage("Error sending OTP: " + error.message);
-      console.error("Error sending OTP:", error);
-    }
-  };
-
-  // Handle OTP verification
-  const handleVerifyOtp = async () => {
-    const confirmationResult = window.confirmationResult;
-
-    try {
-      await confirmationResult.confirm(otp);
-      console.log("OTP verified!");
-      router.push("/dashboard"); // Redirect to dashboard after OTP verification
-    } catch (error) {
-      setErrorMessage("Invalid OTP: " + error.message);
-      console.error("Error verifying OTP:", error);
+      console.error("Error during Google sign-in:", error);
+      setErrorMessage("Failed to sign in with Google. Please try again.");
     }
   };
 
@@ -220,51 +166,46 @@ export default function AuthPage() {
             ) : (
               // Render Phone SignIn when phone login is selected
               <div className="absolute w-full space-y-5">
-                {!isOtpSent ? (
-                  <div>
-                    <label className="block text-lg font-medium text-gray-700">
-                      Phone Number
-                    </label>
-                    <input
-                      type="text"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value)}
-                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 text-lg"
-                      placeholder="Enter your phone number"
-                    />
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={handleSendOtp}
-                      className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 text-lg transition mt-4"
-                    >
-                      Send OTP
-                    </motion.button>
-                  </div>
-                ) : (
-                  <div>
-                    <label className="block text-lg font-medium text-gray-700">
-                      Enter OTP
-                    </label>
-                    <input
-                      type="text"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 text-lg"
-                      placeholder="Enter OTP"
-                    />
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={handleVerifyOtp}
-                      className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 text-lg transition mt-4"
-                    >
-                      Verify OTP
-                    </motion.button>
-                  </div>
-                )}
-                <div id="recaptcha-container" className="hidden"></div>{" "}
-                {/* Invisible reCAPTCHA */}
+                <div>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 text-lg"
+                    placeholder="Enter your phone number"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 text-lg transition mt-4"
+                  >
+                    Send OTP
+                  </motion.button>
+                </div>
+
+                {/* Hide OTP section */}
+                {/* <div>
+                  <label className="block text-lg font-medium text-gray-700">
+                    Enter OTP
+                  </label>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-400 text-lg"
+                    placeholder="Enter OTP"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 text-lg transition mt-4"
+                  >
+                    Verify OTP
+                  </motion.button>
+                </div> */}
               </div>
             )}
           </AnimatePresence>
