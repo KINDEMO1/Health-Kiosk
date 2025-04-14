@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ChevronLeft, Search, X, Clock, Video, UserRound, MapPin, Calendar } from "lucide-react"
+import { ChevronLeft, Search, X, Clock, Video, UserRound, MapPin, Calendar, CheckCircle } from "lucide-react"
 
 // Separate TimeDisplay component to prevent hydration mismatch
 function TimeDisplay() {
@@ -102,6 +102,9 @@ export default function AvailableDoctors() {
   const [currentDay, setCurrentDay] = useState("")
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid")
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null)
+  const [showProfileModal, setShowProfileModal] = useState(false)
+  const [showConsultationModal, setShowConsultationModal] = useState(false)
+  const [consultationRequested, setConsultationRequested] = useState(false)
   const [meetingLink, setMeetingLink] = useState<string | null>(null)
 
   // Store the original list of available doctors
@@ -137,11 +140,34 @@ export default function AvailableDoctors() {
     )
   }, [search, todaysDoctors])
 
+  const handleViewProfile = (doctor: Doctor) => {
+    setSelectedDoctor(doctor)
+    setShowProfileModal(true)
+  }
+
   const handleRequestConsultation = (doctor: Doctor) => {
-    console.log("Consultation requested with doctor:", doctor.name)
+    setSelectedDoctor(doctor)
+    setShowConsultationModal(true)
+  }
+
+  const confirmConsultation = () => {
+    setConsultationRequested(true)
+
+    // Simulate getting a meeting link after a delay
     setTimeout(() => {
-      setMeetingLink("https://meet.google.com/example-meeting") // Dummy link
+      setMeetingLink("https://meet.google.com/example-meeting")
     }, 1500)
+  }
+
+  const closeProfileModal = () => {
+    setShowProfileModal(false)
+    setSelectedDoctor(null)
+  }
+
+  const closeConsultationModal = () => {
+    setShowConsultationModal(false)
+    setConsultationRequested(false)
+    setMeetingLink(null)
   }
 
   const getTodaySchedule = (doctor: Doctor) => {
@@ -271,7 +297,7 @@ export default function AvailableDoctors() {
                     )}
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button variant="outline" onClick={() => setSelectedDoctor(doctor)}>
+                  <Button variant="outline" onClick={() => handleViewProfile(doctor)}>
                     View Profile
                   </Button>
                   <Button onClick={() => handleRequestConsultation(doctor)}>Request Consultation</Button>
@@ -330,7 +356,7 @@ export default function AvailableDoctors() {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={() => setSelectedDoctor(doctor)}>
+                        <Button variant="outline" size="sm" onClick={() => handleViewProfile(doctor)}>
                           Profile
                         </Button>
                         <Button size="sm" onClick={() => handleRequestConsultation(doctor)}>
@@ -352,23 +378,23 @@ export default function AvailableDoctors() {
         </div>
       )}
 
-      {/* Doctor Profile Modal using Card instead of Dialog */}
-      {selectedDoctor && !meetingLink && (
+      {/* Doctor Profile Modal */}
+      {showProfileModal && selectedDoctor && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <Card className="w-[999px] h-[600px] p-0 overflow-hidden rounded-md shadow-2xl border border-gray-200">
+          <Card className="w-[90%] max-w-[1000px] h-[600px] p-0 overflow-hidden rounded-md shadow-2xl border border-gray-200">
             <CardHeader className="bg-gray-50 p-4 border-b">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl font-bold">Doctor Profile</CardTitle>
-                <Button variant="ghost" size="icon" onClick={() => setSelectedDoctor(null)}>
+                <Button variant="ghost" size="icon" onClick={closeProfileModal}>
                   <X size={18} />
                 </Button>
               </div>
             </CardHeader>
 
             <CardContent className="p-0">
-              <div className="flex flex-row h-[480px]">
+              <div className="flex flex-col md:flex-row h-[480px]">
                 {/* Left Column - Doctor Image and Basic Info */}
-                <div className="w-1/3 border-r bg-white p-6 flex flex-col items-center">
+                <div className="w-full md:w-1/3 border-r bg-white p-6 flex flex-col items-center">
                   <Avatar className="w-32 h-32 border-4 border-gray-200">
                     <AvatarImage src={selectedDoctor.profileImage || "/placeholder.svg"} alt={selectedDoctor.name} />
                     <AvatarFallback className="bg-gray-100">
@@ -386,8 +412,8 @@ export default function AvailableDoctors() {
                   <Button
                     className="w-full mt-auto"
                     onClick={() => {
+                      closeProfileModal()
                       handleRequestConsultation(selectedDoctor)
-                      setSelectedDoctor(null)
                     }}
                   >
                     Request Consultation
@@ -395,7 +421,7 @@ export default function AvailableDoctors() {
                 </div>
 
                 {/* Right Column - Doctor Details with Scrollable Content */}
-                <div className="w-2/3 p-6 overflow-y-auto">
+                <div className="w-full md:w-2/3 p-6 overflow-y-auto">
                   {/* Today's Schedule */}
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-4">
                     <div className="flex items-center gap-2 text-blue-700 font-medium mb-2">
@@ -423,7 +449,7 @@ export default function AvailableDoctors() {
                       <Calendar size={18} />
                       <span>Weekly Schedule</span>
                     </div>
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                       {selectedDoctor.schedule.map((day) => (
                         <div key={day.day} className="flex justify-between items-center py-1 border-b last:border-b-0">
                           <div className="flex items-center gap-2">
@@ -450,10 +476,91 @@ export default function AvailableDoctors() {
             </CardContent>
 
             <CardFooter className="bg-gray-50 p-4 border-t flex justify-end">
-              <Button variant="outline" onClick={() => setSelectedDoctor(null)}>
+              <Button variant="outline" onClick={closeProfileModal}>
                 <X size={16} className="mr-2" /> Close
               </Button>
             </CardFooter>
+          </Card>
+        </div>
+      )}
+
+      {/* Consultation Request Modal */}
+      {showConsultationModal && selectedDoctor && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <Card className="w-[90%] max-w-[500px] p-0 overflow-hidden rounded-md shadow-2xl border border-gray-200">
+            <CardHeader className="bg-gray-50 p-4 border-b">
+              <div className="flex justify-between items-center">
+                <CardTitle className="text-xl font-bold">
+                  {meetingLink ? "Consultation Ready" : "Request Consultation"}
+                </CardTitle>
+                <Button variant="ghost" size="icon" onClick={closeConsultationModal}>
+                  <X size={18} />
+                </Button>
+              </div>
+            </CardHeader>
+
+            <CardContent className="p-6">
+              {meetingLink ? (
+                <div className="text-center space-y-4">
+                  <div className="flex justify-center">
+                    <CheckCircle className="h-16 w-16 text-green-500" />
+                  </div>
+                  <h3 className="text-xl font-bold">Your consultation is ready!</h3>
+                  <p className="text-gray-600">You can now join the video consultation with {selectedDoctor.name}.</p>
+                  <Button
+                    className="w-full mt-4"
+                    onClick={() => {
+                      window.open(meetingLink, "_blank")
+                      closeConsultationModal()
+                    }}
+                  >
+                    Join Consultation
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="w-16 h-16 border-2 border-gray-200">
+                      <AvatarImage src={selectedDoctor.profileImage || "/placeholder.svg"} alt={selectedDoctor.name} />
+                      <AvatarFallback className="bg-gray-100">
+                        <UserRound size={24} />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="text-lg font-bold">{selectedDoctor.name}</h3>
+                      <p className="text-gray-600">{selectedDoctor.specialization}</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <div className="flex items-center gap-2 text-blue-700 font-medium mb-1">
+                      <Clock size={16} />
+                      <span>Today&apos;s Clinic Hours</span>
+                    </div>
+                    <p className="font-semibold">{getTodaySchedule(selectedDoctor)}</p>
+                  </div>
+
+                  <p className="text-gray-700">
+                    Would you like to request a consultation with {selectedDoctor.name}? Once confirmed, you will be
+                    provided with a video consultation link.
+                  </p>
+
+                  {consultationRequested ? (
+                    <div className="flex justify-center items-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
+                      <span className="ml-3">Setting up your consultation...</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-end gap-3 mt-4">
+                      <Button variant="outline" onClick={closeConsultationModal}>
+                        Cancel
+                      </Button>
+                      <Button onClick={confirmConsultation}>Confirm Consultation</Button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
           </Card>
         </div>
       )}
