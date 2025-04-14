@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/carousel";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
+// Removed the unused RedirectToLanguageSelect function
+
 const products = [
   {
     id: 1,
@@ -37,8 +39,8 @@ const products = [
 
 export default function HealthcareKiosk() {
   const router = useRouter();
-  const session = useSession(); // Get current session
-  const supabase = useSupabaseClient(); // Access Supabase client
+  const session = useSession();
+  const supabase = useSupabaseClient();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -129,7 +131,7 @@ export default function HealthcareKiosk() {
           </Button>
         ) : (
           <Button
-            onClick={() => router.push("/form")}
+            onClick={() => router.push("/language-select")}
             className="mt-4 md:mt-6 px-6 md:px-8 py-3 md:py-4 bg-blue-500 text-white rounded-full text-base md:text-lg font-semibold hover:bg-blue-600 transition-all duration-300 shadow-lg"
           >
             Get Started

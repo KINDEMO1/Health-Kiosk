@@ -5,6 +5,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signOut,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
 } from "firebase/auth";
 
 console.log("Firebase API Key:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
@@ -28,4 +30,12 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
-export { auth, googleProvider, signInWithPopup, signOut, app };
+export {
+  auth,
+  googleProvider,
+  signInWithPopup,
+  signOut,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  app,
+};

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FaChevronLeft, FaSave, FaChevronRight } from "react-icons/fa";
+import { useLanguage } from "@/context/LanguangeContext"
 
 interface MedicalFormData {
   symptoms: string;
@@ -21,6 +22,7 @@ interface MedicalFormData {
 
 export default function MedicalInformation() {
   const router = useRouter();
+  const { t, language, setLanguage } = useLanguage()
   const [formData, setFormData] = useState<MedicalFormData>({
     symptoms: "",
     systolic: "",
@@ -33,9 +35,11 @@ export default function MedicalInformation() {
   });
 
   const [time, setTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => setTime(new Date()), 1000);
+    setMounted(true);
     return () => clearInterval(interval);
   }, []);
 
@@ -52,19 +56,33 @@ export default function MedicalInformation() {
     alert("Medical information saved successfully!");
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "tl" : "en")
+  }
+
+  if (!mounted) return null
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white p-4 flex flex-col items-center justify-center relative">
       <div className="absolute top-4 right-6 text-gray-700 text-lg font-semibold">
         {time.toLocaleTimeString()}
       </div>
+
+      <div className="absolute top-4 left-6">
+        <Button variant="outline" onClick={toggleLanguage}>
+          {t("language.toggle")}
+        </Button>
+      </div>
+
+
       <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4 text-center">
-        Medical Information
+      {t("medinfo.title")}
       </h1>
 
       <div className="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 space-y-8">
         <div>
           <h2 className="text-lg font-semibold text-gray-700 mb-4">
-            Medikal na Impormasyon
+          {t("medinfo.title")}
           </h2>
           <Label className="block mb-2">
             Ano ang iyong karamdamang nais mong ipakonsulta?
@@ -80,7 +98,7 @@ export default function MedicalInformation() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label>Blood Pressure (mmHg)</Label>
+            <Label>\{t("medinfo.bp")}</Label>
             <div className="flex gap-2 mt-1">
               <Input
                 name="systolic"
@@ -100,7 +118,7 @@ export default function MedicalInformation() {
           </div>
 
           <div>
-            <Label>Oxygen Saturation (% SpO2)</Label>
+            <Label>{t("medinfo.oxygen")}</Label>
             <Input
               type="number"
               name="oxygenSaturation"
@@ -111,7 +129,7 @@ export default function MedicalInformation() {
           </div>
 
           <div>
-            <Label>Temperatura (°C)</Label>
+            <Label>{t("medinfo.temp")}</Label>
             <Input
               type="number"
               name="temperature"
@@ -122,7 +140,7 @@ export default function MedicalInformation() {
           </div>
 
           <div>
-            <Label>Pulse Rate (bpm)</Label>
+            <Label>{t("medinfo.pulse")}</Label>
             <Input
               type="number"
               name="pulserate"
@@ -133,7 +151,7 @@ export default function MedicalInformation() {
           </div>
 
           <div>
-            <Label>Taas (cm)</Label>
+            <Label>{t("medinfo.height")}</Label>
             <Input
               type="number"
               name="height"
@@ -144,7 +162,7 @@ export default function MedicalInformation() {
           </div>
 
           <div>
-            <Label>Timbang (kg)</Label>
+            <Label>{t("medinfo.weight")}</Label>
             <Input
               type="number"
               name="weight"
@@ -162,7 +180,7 @@ export default function MedicalInformation() {
           onClick={() => router.push("/dashboard")}
           className="flex items-center gap-2"
         >
-          <FaChevronLeft /> Bumalik
+          <FaChevronLeft /> {t("back.button")}
         </Button>
 
         <div className="flex gap-2">
@@ -171,13 +189,13 @@ export default function MedicalInformation() {
             onClick={handleSave}
             className="flex items-center gap-2"
           >
-            <FaSave /> Save
+            <FaSave /> {t("save.button")}
           </Button>
           <Button
             onClick={() => router.push("/deeplink")}
             className="flex items-center gap-2"
           >
-            Susunod <FaChevronRight />
+            {t("next.button")} <FaChevronRight />
           </Button>
         </div>
       </div>

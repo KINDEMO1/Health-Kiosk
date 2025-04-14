@@ -11,15 +11,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { auth, signOut } from "@/lib/firebase";
+import { useLanguage } from "@/context/LanguangeContext";
 
 
 export default function DoctorsHomePage() {
   const router = useRouter();
-  const [isEnglish, setIsEnglish] = useState(false);
+  const { t, language, setLanguage } = useLanguage();
   const [currentTime, setCurrentTime] = useState<string | null>(null);
   const [currentDate, setCurrentDate] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true)
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(
@@ -46,18 +49,9 @@ export default function DoctorsHomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  const translations = {
-    homepage: "Doctor's Home Page",
-    personalInfo: isEnglish
-      ? "Doctor's Personal Information"
-      : "Personal na Impormasyon ng Doktor",
-    startAppointments: isEnglish
-      ? "Start Health Kiosk Appointments"
-      : "Simulan ang Health Kiosk Appointment",
-    patientInfo: isEnglish ? "Patient Information" : "Impormasyon ng Pasyente",
-    ehrClinic: isEnglish ? "PPD Clinic (EHR)" : "PPD Clinic (EHR)",
-    logout: isEnglish ? "Logout" : "Mag Log out",
-  };
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "tl" : "en")
+  }
 
   const handleLogout = async () => {
     try {
@@ -67,6 +61,8 @@ export default function DoctorsHomePage() {
       console.error("Error signing out: ", error);
     }
   };
+
+  if (!mounted) return null
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center p-4">
@@ -91,18 +87,14 @@ export default function DoctorsHomePage() {
             </div>
           )}
 
-          <Button
-            variant="outline"
-            onClick={() => setIsEnglish(!isEnglish)}
-            className="px-6 py-3 text-blue-700 text-lg font-semibold"
-          >
-            {isEnglish ? "Filipino" : "English"}
+<Button variant="outline" onClick={toggleLanguage} className="px-6 py-3 text-blue-700 text-lg font-semibold">
+            {t("language.toggle")}
           </Button>
         </div>
 
         {/* Title */}
         <h1 className="text-3xl font-extrabold text-center text-gray-900 mt-2">
-          {translations.homepage}
+        {t("admin.homepage")}
         </h1>
 
         {/* Buttons Section */}
@@ -110,22 +102,22 @@ export default function DoctorsHomePage() {
           {[
             {
               icon: <FaUser className="text-2xl text-blue-600" />,
-              text: translations.personalInfo,
+              text: t("admin.personal.info"),
               onClick: () => router.push("/docprofiles"),
             },
             {
               icon: <FaBriefcaseMedical className="text-2xl text-green-600" />,
-              text: translations.startAppointments,
+              text: t("admin.start.appointments"),
               onClick: () => router.push("/appointment"),
             },
             {
               icon: <FaUsers className="text-2xl text-indigo-600" />,
-              text: translations.patientInfo,
+              text: t("admin.patient.info"),
               onClick: () => router.push("/patientinfo"),
             },
             {
               icon: <FaHospital className="text-2xl text-purple-600" />,
-              text: translations.ehrClinic,
+              text: t("admin.ehr.clinic"),
               onClick: () => window.open("https://www.ppd.ph/", "_blank"),
             },
           ].map((item, index) => (
@@ -150,7 +142,7 @@ export default function DoctorsHomePage() {
             className="w-full flex items-center justify-center gap-4 p-6 text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
           >
             <FaSignOutAlt className="text-2xl" />
-            {translations.logout}
+            {t("logout.button")}
           </Button>
         </div>
 

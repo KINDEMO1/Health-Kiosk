@@ -10,15 +10,18 @@ import {
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useLanguage } from "@/context/LanguangeContext";
 
 export default function KioskDashboard() {
   const router = useRouter();
-  const [isEnglish, setIsEnglish] = useState(false);
+  const { t, language, setLanguage } = useLanguage()
   const [currentTime, setCurrentTime] = useState<string | null>(null);
   const [currentDate, setCurrentDate] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false)
 
   // Update time every second, but only on the client
   useEffect(() => {
+    setMounted(true)
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(
@@ -45,21 +48,12 @@ export default function KioskDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  const translations = {
-    homepage: "Homepage",
-    personalData: isEnglish
-      ? "Show Personal Data"
-      : "Ipakita ang personal na datos",
-    availableDoctors: isEnglish
-      ? "Available Doctors"
-      : "Mga available na Doktor",
-    talkToDoctor: isEnglish ? "Talk to a Doctor" : "Makipag-usap sa Doktor",
-    printPrescription: isEnglish ? "Print Prescription" : "Iprint ang reseta",
-    logout: isEnglish ? "Logout" : "Mag Log out",
-    medicalInformation: isEnglish
-      ? "Medical Information"
-      : "Impormasyon Medikal", // Correct translation
-  };
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "tl" : "en")
+  }
+
+  if (!mounted) return null
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center p-4">
@@ -85,18 +79,14 @@ export default function KioskDashboard() {
             </div>
           )}
 
-          <Button
-            variant="outline"
-            onClick={() => setIsEnglish(!isEnglish)}
-            className="px-6 py-3 text-blue-700 text-lg font-semibold"
-          >
-            {isEnglish ? "Filipino" : "English"}
+<Button variant="outline" onClick={toggleLanguage} className="px-6 py-3 text-blue-700 text-lg font-semibold">
+            {t("language.toggle")}
           </Button>
         </div>
 
         {/* Title */}
         <h1 className="text-3xl font-extrabold text-center text-gray-900 mt-2">
-          {translations.homepage}
+        {t("dashboard.homepage")}
         </h1>
 
         {/* Buttons Section */}
@@ -104,22 +94,22 @@ export default function KioskDashboard() {
           {[
             {
               icon: <FaUser className="text-2xl text-blue-600" />,
-              text: translations.personalData,
+              text: t("dashboard.personal.data"),
               onClick: () => router.push("/user"),
             },
             {
               icon: <FaUserMd className="text-2xl text-green-600" />,
-              text: translations.availableDoctors,
+              text: t("dashboard.available.doctors"),
               onClick: () => router.push("/doctors"),
             },
             {
               icon: <FaHeartbeat className="text-2xl text-red-600" />, // Changed to FaHeartbeat for medical info
-              text: translations.medicalInformation, // Updated text
+              text: t("dashboard.medical.info"),// Updated text
               onClick: () => router.push("/medinfo"), // Adjusted route if needed
             },
             {
               icon: <FaPrint className="text-2xl text-purple-600" />,
-              text: translations.printPrescription,
+              text: t("dashboard.print.prescription"),
               onClick: () => router.push("/prescriptions"),
             },
           ].map((item, index) => (
@@ -142,7 +132,7 @@ export default function KioskDashboard() {
             className="w-full flex items-center justify-center gap-4 p-6 text-xl font-semibold rounded-2xl shadow-lg hover:scale-105 transition-all"
           >
             <FaSignOutAlt className="text-2xl" />
-            {translations.logout}
+            {t("logout.button")}
           </Button>
         </div>
 
