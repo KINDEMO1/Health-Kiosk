@@ -145,15 +145,15 @@ export default function HealthcareKiosk() {
           <ul className="space-y-2 md:space-y-3 text-sm md:text-base">
             <li className="flex items-center space-x-2">
               <span className="text-blue-500">✓</span>
-              <span>24/7 Healthcare Support</span>
+              <span>Timely Healthcare Assistance</span>
             </li>
             <li className="flex items-center space-x-2">
               <span className="text-blue-500">✓</span>
-              <span>Secure Patient Data</span>
+              <span>Protected & Confidential Patient Records</span>
             </li>
             <li className="flex items-center space-x-2">
               <span className="text-blue-500">✓</span>
-              <span>Smart Health Monitoring</span>
+              <span>Intelligent Health Monitoring Solutions</span>
             </li>
           </ul>
         </div>

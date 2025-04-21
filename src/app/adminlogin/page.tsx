@@ -1,5 +1,6 @@
 "use client";
-
+import { Button } from "@/components/ui/button"
+import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
@@ -23,6 +24,27 @@ export default function AuthPage() {
 
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-gray-100 overflow-hidden">
+      <header className="w-full bg-blue-500 p-2 shadow-lg fixed top-0 left-0 z-10">
+        <div className="flex justify-between items-center max-w-screen-xl mx-auto">
+          <Link href="/" className="text-white text-2xl font-semibold hover:underline">
+            eKonsulTech
+          </Link>
+          <nav>
+            <ul className="flex space-x-6 text-white text-lg">
+              <li>
+                <Button variant="link" className="text-white hover:text-blue-300" onClick={() => router.push("/about")}>
+                  About
+                </Button>
+              </li>
+              <li>
+                <Button variant="link" className="text-white hover:text-blue-300" onClick={() => router.push("/contacts")}>
+                  Contacts
+                </Button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </header>
       <div className="w-full max-w-3xl flex flex-col shadow-lg rounded-xl overflow-hidden bg-white p-8">
         {/* Tab Toggle */}
         <div className="flex justify-center space-x-6 mb-6">

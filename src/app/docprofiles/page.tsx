@@ -111,7 +111,7 @@ export default function DoctorProfile() {
         {/* Header Section */}
         <div className="w-full max-w-[700px] flex items-center justify-between mb-6">
           <Button variant="outline" onClick={() => router.push("/admindash")} className="flex items-center gap-2">
-            <ChevronLeft size={16} /> Bumalik
+            <ChevronLeft size={16} /> Back
           </Button>
 
           <h1 className="text-3xl font-bold text-gray-800 text-center flex-1">eKonsulTech</h1>

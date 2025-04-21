@@ -1,12 +1,12 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
-import Image from "next/image";
+"use client"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import Link from "next/link"
+import Image from "next/image"
 
 export default function AboutPage() {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans-serif">
@@ -24,14 +24,18 @@ export default function AboutPage() {
                 </Button>
               </li>
               <li>
-                <Button variant="link" className="text-white hover:text-blue-300" onClick={() => router.push("/contacts")}>
+                <Button
+                  variant="link"
+                  className="text-white hover:text-blue-300"
+                  onClick={() => router.push("/contacts")}
+                >
                   Contacts
                 </Button>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </header>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
 
       {/* Main content with padding to account for fixed header */}
       <main className="pt-16">
@@ -124,13 +128,6 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/1.jpg"
-                  alt="Bob Justin B. Jobo"
-                  width={96} // Defined width and height for optimization
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Bob Justin B. Jobo</h3>
                 <p className="text-sm text-gray-600">Project Leader of the Biomedical Engineering Team</p>
               </CardContent>
@@ -138,13 +135,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/2.jpg"
-                  alt="Nataniel Allan Alejandre"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Nataniel Allan Alejandre</h3>
                 <p className="text-sm text-gray-600">Project Member of the Biomedical Engineering Team</p>
               </CardContent>
@@ -152,13 +142,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/3.jpg"
-                  alt="Ceon Addy Louise Q. Ilagan"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Ceon Addy Louise Q. Ilagan</h3>
                 <p className="text-sm text-gray-600">Project Member of the Biomedical Engineering Team</p>
               </CardContent>
@@ -166,13 +149,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/4.jpg"
-                  alt="Dinson Del Rosario"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Dinson Del Rosario</h3>
                 <p className="text-sm text-gray-600">Project Leader of the College of Medicine Team</p>
               </CardContent>
@@ -180,13 +156,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/5.jpg"
-                  alt="Ariane May Cleofe"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Ariane May Cleofe</h3>
                 <p className="text-sm text-gray-600">Project Member of the College of Medicine Team</p>
               </CardContent>
@@ -194,13 +163,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/6.jpg"
-                  alt="Hayzel Datinguinoo"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Hayzel Datinguinoo</h3>
                 <p className="text-sm text-gray-600">Project Member of the College of Medicine Team</p>
               </CardContent>
@@ -208,13 +170,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/7.jpg"
-                  alt="Chin Angel L. Hidalgo"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Chin Angel L. Hidalgo</h3>
                 <p className="text-sm text-gray-600">Project Member of the College of Medicine Team</p>
               </CardContent>
@@ -222,13 +177,6 @@ export default function AboutPage() {
 
             <Card>
               <CardContent className="p-4 flex flex-col items-center text-center">
-                <Image
-                  src="/img/profilepicture/8.jpg"
-                  alt="Little Arielle G. Ocampo"
-                  width={96}
-                  height={96}
-                  className="rounded-full object-cover mb-4"
-                />
                 <h3 className="font-semibold">Little Arielle G. Ocampo</h3>
                 <p className="text-sm text-gray-600">Project Member of the College of Medicine Team</p>
               </CardContent>
@@ -237,5 +185,5 @@ export default function AboutPage() {
         </div>
       </main>
     </div>
-  );
+  )
 }

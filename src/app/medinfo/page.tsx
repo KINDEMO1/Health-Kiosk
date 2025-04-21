@@ -85,20 +85,20 @@ export default function MedicalInformation() {
           {t("medinfo.title")}
           </h2>
           <Label className="block mb-2">
-            Ano ang iyong karamdamang nais mong ipakonsulta?
+          {t("medinfo.symptoms")}
           </Label>
           <Textarea
             name="symptoms"
             value={formData.symptoms}
             onChange={handleChange}
-            placeholder="Ilagay ang iyong sagot dito..."
+            placeholder={t("medinfo.placeholder")}
             className="w-full resize-none overflow-auto h-32"
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <Label>\{t("medinfo.bp")}</Label>
+            <Label>{t("medinfo.bp")}</Label>
             <div className="flex gap-2 mt-1">
               <Input
                 name="systolic"

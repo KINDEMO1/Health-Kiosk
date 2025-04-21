@@ -48,7 +48,6 @@ export default function PatientInformationKiosk() {
     doctorNote: "",
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -81,15 +80,6 @@ export default function PatientInformationKiosk() {
         Patient Information System
       </h1>
 
-      {/* Search Input */}
-      <div className="w-full max-w-5xl mb-4">
-        <Input
-          type="text"
-          placeholder="Search patient name..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
 
       {/* Main Form Container */}
       <div className="w-full max-w-5xl bg-white rounded-xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
