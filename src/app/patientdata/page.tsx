@@ -87,7 +87,7 @@ export default function KioskDashboard() {
       <div className="w-[700px] max-w-full px-4 sm:px-8">
         {/* Header with Time & Language Toggle */}
         <div className="flex flex-col sm:flex-row items-center justify-between w-full mb-4">
-          <Button variant="outline" onClick={() => router.push("/admindash")} className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => router.push("/patientinfo")} className="flex items-center gap-2">
             <FaChevronLeft /> {translations.Backbutton}
           </Button>
 

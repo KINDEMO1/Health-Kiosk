@@ -1,20 +1,44 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { FaPrint, FaFilePdf, FaArrowLeft } from "react-icons/fa";
-import { FiX } from "react-icons/fi";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { FaPrint, FaFilePdf, FaArrowLeft } from "react-icons/fa"
+import { FiX } from "react-icons/fi"
+import { Button } from "@/components/ui/button"
 
 interface Prescription {
-  date: string;
-  fileUrl: string;
+  date: string
+  fileUrl: string
 }
 
 export default function PrescriptionsPage() {
-  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-  const [selectedPrescription, setSelectedPrescription] = useState<string | null>(null);
-  const router = useRouter();
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([])
+  const [selectedPrescription, setSelectedPrescription] = useState<string | null>(null)
+  const router = useRouter()
+
+  // Add print styles
+  useEffect(() => {
+    // Add a style tag for print media
+    const style = document.createElement("style")
+    style.innerHTML = `
+    @media print {
+      .no-print { 
+        display: none !important; 
+      }
+      .print-only {
+        display: block !important;
+      }
+      body, html {
+        background: white !important;
+      }
+    }
+  `
+    document.head.appendChild(style)
+
+    return () => {
+      document.head.removeChild(style)
+    }
+  }, [])
 
   // Simulate fetching from API
   useEffect(() => {
@@ -24,29 +48,25 @@ export default function PrescriptionsPage() {
         { date: "March 20, 2025", fileUrl: "/prescriptions/march_20_2025.pdf" },
         { date: "March 15, 2025", fileUrl: "/prescriptions/march_15_2025.pdf" },
         { date: "March 10, 2025", fileUrl: "/prescriptions/march_10_2025.pdf" },
-      ];
-      setPrescriptions(mockData);
-    };
+      ]
+      setPrescriptions(mockData)
+    }
 
-    fetchPrescriptions();
-  }, []);
+    fetchPrescriptions()
+  }, [])
 
   const handlePrint = () => {
     if (selectedPrescription) {
-      const printWindow = window.open(selectedPrescription, "_blank");
-      if (printWindow) {
-        printWindow.print();
-      }
+      // Print the current page instead of opening a new tab
+      window.print()
     }
-  };
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col p-6 space-y-6 md:flex-row md:space-x-6 md:space-y-0">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col p-6 space-y-6 md:flex-row md:space-x-6 md:space-y-0 print:bg-white print:p-0">
       {/* Left Side: Prescription List */}
-      <div className="w-full md:w-1/3 bg-white shadow-xl rounded-lg p-6 relative">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-          Previous Prescriptions
-        </h2>
+      <div className="w-full md:w-1/3 bg-white shadow-xl rounded-lg p-6 relative no-print">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">Previous Prescriptions</h2>
         {prescriptions.length > 0 ? (
           <ul className="space-y-4">
             {prescriptions.map((prescription, index) => (
@@ -77,7 +97,7 @@ export default function PrescriptionsPage() {
         <div className="absolute bottom-6 left-6 z-10">
           <Button
             variant="ghost"
-            onClick={() => router.push("/patientdata")}
+            onClick={() => router.push("/dashboard")}
             className="flex items-center gap-2 bg-black text-white hover:bg-gray-800 transition duration-300 p-2 rounded-lg"
           >
             <FaArrowLeft /> Back to Dashboard
@@ -86,13 +106,11 @@ export default function PrescriptionsPage() {
       </div>
 
       {/* Right Side: PDF Preview */}
-      <div className="w-full md:w-2/3 flex justify-center items-center p-6">
+      <div className="w-full md:w-2/3 flex justify-center items-center p-6 print:w-full print:p-0">
         {selectedPrescription ? (
-          <div className="bg-white shadow-xl rounded-lg p-6 w-full h-[80vh] flex flex-col border">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-800">
-                Prescription Preview
-              </h2>
+          <div className="bg-white shadow-xl rounded-lg p-6 w-full h-[80vh] flex flex-col border print:shadow-none print:p-0 print:border-0 print:h-auto">
+            <div className="flex justify-between items-center mb-4 no-print">
+              <h2 className="text-xl font-semibold text-gray-800">Prescription Preview</h2>
               <Button
                 variant="destructive"
                 onClick={() => setSelectedPrescription(null)}
@@ -103,16 +121,14 @@ export default function PrescriptionsPage() {
             </div>
             <iframe
               src={selectedPrescription}
-              className="w-full h-full border rounded-lg"
+              className="w-full h-full border rounded-lg print:border-0"
               title="Prescription PDF"
             />
           </div>
         ) : (
-          <p className="text-gray-500 text-lg">
-            Select a prescription to preview
-          </p>
+          <p className="text-gray-500 text-lg">Select a prescription to preview</p>
         )}
       </div>
     </div>
-  );
+  )
 }
