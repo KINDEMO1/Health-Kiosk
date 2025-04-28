@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts"
-, "src/lib/firebase.ts"  ],
+, "src/lib/supabase.ts"  ],
   "exclude": [
     "node_modules"
   ]

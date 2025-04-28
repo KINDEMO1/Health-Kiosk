@@ -150,13 +150,34 @@ export default function AvailableDoctors() {
     setShowConsultationModal(true)
   }
 
-  const confirmConsultation = () => {
+  const confirmConsultation = async () => {
     setConsultationRequested(true)
 
-    // Simulate getting a meeting link after a delay
-    setTimeout(() => {
-      setMeetingLink("https://meet.google.com/example-meeting")
-    }, 1500)
+    try {
+      const response = await fetch("/api/create-meet", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          doctorId: selectedDoctor?.id,
+          patientId: "current-user-id", // In a real app, you'd get this from your auth context
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to create meeting link")
+      }
+
+      const data = await response.json()
+      setMeetingLink(data.meetLink)
+    } catch (error) {
+      console.error("Error creating meeting:", error)
+      alert("There was a problem setting up the consultation. Please try again.")
+    } finally {
+      setConsultationRequested(false)
+    }
   }
 
   const closeProfileModal = () => {

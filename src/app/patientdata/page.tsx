@@ -8,6 +8,9 @@ import { FaHospital, FaFileDownload, FaCamera, FaHistory, FaUpload } from "react
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
 export default function KioskDashboard() {
   const router = useRouter()
@@ -17,6 +20,32 @@ export default function KioskDashboard() {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const handleJoinMeet = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("consultations")
+        .select("meet_link")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .single()
+
+      if (error) {
+        console.error("Error fetching meet link:", error)
+        alert("No consultation meet link available yet.")
+        return
+      }
+
+      if (!data?.meet_link) {
+        alert("No consultation meet link available yet.")
+        return
+      }
+
+      window.open(data.meet_link, "_blank")
+    } catch (error) {
+      console.error("Error joining meet:", error)
+      alert("There was a problem joining the consultation. Please try again.")
+    }
+  }
 
   // Update time every second, but only on the client
   useEffect(() => {
@@ -62,7 +91,6 @@ export default function KioskDashboard() {
     fileSelected: isEnglish ? "File Selected" : "Napiling File",
     noFileSelected: isEnglish ? "No file selected" : "Walang napiling file",
     Backbutton: isEnglish ? "Back" : "Bumalik",
-
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +142,7 @@ export default function KioskDashboard() {
             {
               icon: <FaHospital className="text-2xl text-purple-600" />,
               text: translations.joinMeetNow,
-              onClick: () => router.push("/meet"),
+              onClick: handleJoinMeet, // <-- New
             },
             {
               icon: <FaFileDownload className="text-2xl text-green-600" />,
